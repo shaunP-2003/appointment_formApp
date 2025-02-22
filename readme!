@@ -1,0 +1,132 @@
+## Setup Instructions Phase 1
+
+Follow these steps to set up and run the project on your local machine.
+
+- Make sure Github is installed on vscode. 
+- Open your terminal or command prompt.
+- Clone the repository to your local machine using the following command:
+  git clone https://github.com/your-username/appointment-form.git
+- Navigate to the project directory:
+  cd appointment-form
+- Install the required dependencies by running:
+  npm install
+- Start the development server by running:
+  npm run dev
+- The application should now be running. Open your browser and navigate to:
+  http://localhost:3000
+- You should see the Appointment Request Form displayed on the page.
+
+
+## Phase 2 Answers 
+
+Phase 2: Problem solving exercise 
+1. Information Gather 
+- Gather Patient details such as contact details and appointments history of the patients that were effected the issue. 
+- Gather information from the shift schedules such as which staff members handled the patients cancellations.
+- Gather records from the notification system , to confirm whether cancellation notifications were delivered or failed to deliver.
+- Gather information from the patients feedback such as whether they have received any communication regarding the cancellations.
+
+2. Potential Causes To Check 
+- Check if patients may have provided outdated contact information. 
+- Check if staff may have canceled an appointment but never triggered it on the notification system.
+- Check if there could be potentially be a bugs on the notification system that may cause the notifications to not deliver the notifications properly.
+
+3. How to Verify the Root Cause 
+- Go through and verify that the contact details of the patients in the system are up to date.
+- Speak to staff members to ensure the correct procedures are being taken place when canceling a patient’s appointment.
+- Create a test simulation for canceling appointments to test the notification system to verify if notification is being delivered.
+
+4. Immediate Steps to Prevent Further Issues
+- Update the patients contact details to ensure notifications reach to the correct patients.
+- Assign staff to do manually contact patients as well to confirm canceled appointments.
+- Fixing any bugs in the notifications systems software that is preventing the notifications from being deliver to the patients.
+- For future references document the issue to keep record of the issue and steps taken to resolve the issue for future improvements.
+
+
+## Phase 3 answers
+
+Phase 3: Code reading exercise
+
+1. Because they have different purposes, the loading state indicates to user when data is being processed via the UI with a spinner or loading message to inform users that the app is working. 
+while the error state indicates to the user when an error occurred during the processing of data via the UI with an error message to inform the users of the problem. 
+
+2. 
+Potential Issues:(
+. const response = await fetch(‘/api/appointments’);
+      const data = await response.json();
+       
+The function that fetches the API above just fetches the API assuming that it will return a successful response, but if the API suddenly returns an error , the function will still try to parse the response as JSON. 
+)
+
+Suggested Improvements:( 
+
+Check if the API successful fetched then the function can parse the response as JSON. 
+
+const response = await fetch('/api/appointments');
+if (!response.ok) {
+  throw new Error(`API error! Status: ${response.status}`);
+}
+const data = await response.json();
+)
+
+Potential Issues:(
+
+catch (err) {
+setError(‘Could not load appointments’);
+}
+
+The error message ('Could not load appointments') does not give in dept details on what went wrong making it not user friendly. 
+)
+
+Suggested Improvements:(
+
+Include the error details from the catch block to provide more details. 
+
+catch (err) {
+  setError(err.message || 'Could not load appointments');
+}
+)
+
+
+
+3. 
+-  useEffect is used to ensure fetchAppointments is called only once when the component is first displayed. 
+
+- Without the useEffect the fetchAppointments would get called every time the component re-renders. 
+
+
+4.  
+- Provide Alternative text for loading and error states to ensure screen users are able to identify when application is loading or an error occurred.
+. 
+e.g.)
+
+{loading && <p>Loading appointments, please wait...</p>}
+{error && <p>Error: Unable to load appointments. Please try again later.</p>}
+
+ - Instead of using a <div> to display the appointments , use a list to display the appointment fields. 
+
+e.g) 
+
+<ul>
+  {appointments.map(apt => (
+    <li key={apt.id}>
+      {apt.patientName} - {apt.time}
+    </li>
+  ))}
+</ul>
+
+- Keyboard Accessibility.
+- Ensure the text is readable for users, make sure text has sufficient contrast against the background. 
+
+
+## Assumptions
+
+- The preferred date cannot be in the past, and this is enforced using Zod validation.
+- After the form is finished submitting the form fields should clear , so i implemented a reset function from React Hook Form to clear the form data. 
+
+## Limitations
+
+- Automated testing does not have a 100% test pass, Had to utilize AI to help create the automated testing. 
+- Getting the spinner implemented for loading state, Had to utilize AI as well to help create the spinner and 2 sec delay. 
+- Error handling when encoutring an error during coding, had to resort to AI to help solve the errors. 
+
